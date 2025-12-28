@@ -9,6 +9,7 @@ namespace SantaHatItem
     public class Core : MelonMod
     {
         private bool _itemsInitialized = false;
+        private S1API.Items.ClothingItemDefinition? _santaHat = null;
 
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
@@ -22,7 +23,7 @@ namespace SantaHatItem
         private void InitializeCustomClothing()
         {
             // Create Santa Hat clothing item using existing accessory
-            var santaHat = S1API.Items.ClothingItemCreator.CloneFrom("cap")
+            _santaHat = S1API.Items.ClothingItemCreator.CloneFrom("cap")
                 .WithBasicInfo(
                     id: "santa_hat",
                     name: "Santa Hat",
@@ -34,10 +35,42 @@ namespace SantaHatItem
                 .WithLabelColor(UnityEngine.Color.red)
                 .Build();
 
+            // Defer icon generation until player spawns to use their actual appearance
+            S1API.Entities.Player.LocalPlayerSpawned += OnLocalPlayerSpawned;
+
             // Add to shops
-            int shopsAdded = S1API.Shops.ShopManager.AddToCompatibleShops(santaHat);
-            MelonLogger.Msg($"Created clothing item: {santaHat.Name}");
+            int shopsAdded = S1API.Shops.ShopManager.AddToCompatibleShops(_santaHat);
+            MelonLogger.Msg($"Created clothing item: {_santaHat.Name}");
             MelonLogger.Msg($"Added to {shopsAdded} shop(s)");
+        }
+
+        private void OnLocalPlayerSpawned(S1API.Entities.Player player)
+        {
+            // Unsubscribe after first call
+            S1API.Entities.Player.LocalPlayerSpawned -= OnLocalPlayerSpawned;
+
+            if (_santaHat == null)
+            {
+                MelonLogger.Warning("Santa Hat item not initialized, cannot generate icon.");
+                return;
+            }
+
+            // Generate icon using the player's actual avatar appearance
+            S1API.Rendering.IconFactory.GenerateAccessoryIconSprite(
+                S1API.Entities.Appearances.AccessoryFields.Head.SantaHat,
+                generatedSprite =>
+                {
+                    if (generatedSprite != null)
+                    {
+                        _santaHat.Icon = generatedSprite;
+                        MelonLogger.Msg("Generated custom icon for Santa Hat using player's appearance.");
+                    }
+                    else
+                    {
+                        MelonLogger.Warning("Failed to generate icon for Santa Hat.");
+                    }
+                }
+            );
         }
     }
 }
