@@ -1,19 +1,29 @@
-# HeatedDryingRacks
+# SantaHatItem
 
-A mod for Schedule One that adds heat and cold effects to drying racks.
+A mod for Schedule I that makes the Santa Hat available as a wearable clothing item for players.
 
 ## Features
 
-- Heat bonus: Drying speed increases when temperature is above a certain threshold.
-- Cold penalty: Drying speed decreases when temperature is below a certain threshold.
+- **Wearable Santa Hat**: The festive Santa Hat, previously only available for dealer NPCs, is now a purchasable clothing item for players
+- **Shop Integration**: Automatically added to compatible clothing shops in the game
+- **Custom Icon**: Generates a custom icon using your player's appearance for preview
+- **No Configuration Required**: Works out of the box with sensible defaults
 
-## Configuration
+## Installation
 
-The mod can be configured through the game's preferences menu. The following options are available:
+1. **Download** the latest `SantaHatItem.dll` from [Releases](../../releases)
+2. **Install** by dropping it into your game's `Mods` folder
+3. **Play!** The Santa Hat will be available in clothing shops
 
-- Enable Heat Effect: If true, heat speeds up drying.
-- Enable Cold Effect: If true, cold slows/pauses drying.
-- Heat Bonus Minutes: Extra minutes added per tick when hot (less overall drying time in game).
-- Cold Penalty Minutes: Minutes removed per tick when cold (more overall drying time in game).
-- Heat Threshold (°C): Temperature above which heat bonus applies.
-- Cold Threshold (°C): Temperature below which cold penalty applies.
+## Usage
+
+Once installed, you can find the Santa Hat in the clothing shop. It will appear as a red-labeled item priced at $10.
+
+## Requirements
+
+- Schedule I (MelonLoader installed)
+- S1API (dependency)
+
+---
+
+*Licensed under GPL-3.0*
