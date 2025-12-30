@@ -64,6 +64,13 @@ namespace SantaHatItem
                     {
                         _santaHat.Icon = generatedSprite;
                         MelonLogger.Msg("Generated custom icon for Santa Hat using player's appearance.");
+                        
+                        // Refresh the icon in all shop listings because we are setting the icon after the item is already added to the shop
+                        int updated = S1API.Shops.ShopManager.RefreshItemIcon(_santaHat);
+                        if (updated > 0)
+                        {
+                            MelonLogger.Msg($"Updated icon in {updated} shop listing(s)");
+                        }
                     }
                     else
                     {
